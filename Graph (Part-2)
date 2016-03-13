@@ -1,0 +1,25 @@
+#This represents the code to plot a bar graph.
+
+
+from matplotlib import pyplot as plt
+from matplotlib import style
+
+
+def show_graph(x1,y1,name):
+    
+    plt.bar(x1, y1, align='center')
+    plt.title(name)
+
+    #plt
+    plt.ylabel('PROFIT\LOSS')
+    plt.xlabel('YEARS')
+
+    plt.show()
+
+
+#Main starts here
+
+style.use('ggplot')
+
+x1 = [2006,2007,2008]
+y1 = [12,-16,6]
