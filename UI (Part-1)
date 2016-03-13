@@ -1,0 +1,113 @@
+# To-plot-graph-using-GUI-in-python
+#User can enter values of profit and loss which will give output in graph
+
+
+import Tkinter as tk
+
+import UI_Graph as gf
+
+class App():
+    def __init__(self,main,name,rr,cc):
+        self.start=2006
+        self.end=2010
+        self.labels=[]
+        self.entries=[]
+        self.vars=[]
+        self.master=main
+        self.master.title(name)
+        self.master["background"]="light blue"
+        self.topFrame=tk.Frame(self.master)
+        self.topFrame["background"]="light blue"
+        #self.topFrame.pack(fill=tk.BOTH, expand=1)#X, Y, BOTH, NONE
+        #self.topFrame.pack()
+        self.topFrame.grid(row=rr, column=cc)
+
+    def add_main_label(self,fr,msg,r,c):
+        label=tk.Label(fr, text=msg)
+        label["background"]="light blue"
+        #label.pack()
+        label.grid(row=r, column=c)
+        return label
+
+    def create_first(self):
+        self.cl=self.add_main_label(self.topFrame,"COMPANY NAME", 0, 0)
+        self.ce,self.cb=self.add_entry(self.topFrame,0,1)
+        
+        sa = self.add_main_label(self.topFrame,"START YEAR", 1, 0)
+        self.se,self.sb=self.add_entry(self.topFrame,1,1)
+
+        ea = self.add_main_label(self.topFrame,"END YEAR", 2, 0)
+        self.ee,self.eb=self.add_entry(self.topFrame,2,1)
+
+        bn=self.add_button(self.topFrame,"NEXT", 3, 1)   
+        
+    def create_layout(self):
+        self.add_main_label(self.frame1,"COMPANY NAME", 0, 0)
+        self.add_main_label(self.frame1,self.ce.get(), 0, 1)
+        self.add_main_label(self.frame1,"*Please Add Minus (-)", 1, 0)
+        self.add_main_label(self.frame1,"Sign for the Years in Loss", 1, 1)                    
+        #self.ce,self.cb=self.add_entry(0,1)
+        last = self.end - self.start + 2
+        for i in range(1,last):
+
+            a = self.add_main_label(self.frame1,str(self.start + i - 1), i+1, 0)
+            e,b = self.add_entry(self.frame1, i+1, 1)
+
+            self.labels.append(a)
+            self.entries.append(b)
+            self.vars.append(e)
+
+        bt=self.add_button(self.frame1,"SUBMIT", last+1, 1)
+        bt.bind("<Button-1>", self.echoname)
+        
+        
+    def add_button(self, fr, name, rrr, ccc):
+        button=tk.Button(fr)
+        button["text"]=name
+        #self.button.place(x=5, y=10)
+        #self.button.pack()
+        button.grid(row=rrr, column=ccc)
+        button.bind("<Button-1>", self.show_next)
+        return button
+
+    def show_next(self,event):
+        self.start=int(self.se.get())
+        self.end=int(self.ee.get())
+        self.toplevel=tk.Toplevel(self.master)
+        self.frame1=tk.Frame(self.toplevel)
+        self.frame1["background"]="light blue"
+        self.frame1.grid()
+        self.create_layout()
+        
+    def echoname(self,event):
+        x=[]
+        y=[]
+        name=self.ce.get()
+        for a in self.labels:
+            x.append(int(a["text"]))
+
+        for e in self.vars:
+            y.append(float(e.get()))
+        
+        print x,y
+        gf.show_graph(x,y,name)
+        
+    def add_entry(self, fr, rr, cc):
+        ent=tk.StringVar()
+        entry=tk.Entry(fr, textvariable=ent)
+        entry.grid(row=rr, column=cc)
+        return ent,entry
+
+
+#Main starts from here
+root=tk.Tk()#Create main window
+GraphApp=App(root,"UI GRAPH",0,0)
+#GraphApp.add_main_label("COMPANY NAME", 0, 0)
+#GraphApp.add_entry(0, 1)
+#GraphApp.add_button("SUBMIT", 11, 1)
+GraphApp.create_first()
+#GraphApp.create_layout()
+
+
+root.mainloop()#infinite loop listens for events to happen
+
